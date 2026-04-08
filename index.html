@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Your Seat</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 50px 20px;
+            margin: 0;
+        }
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        p {
+            color: #666;
+            margin-bottom: 25px;
+        }
+        .search-wrapper {
+            position: relative;
+            width: 100%;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+            outline: none;
+        }
+        input[type="text"]:focus {
+            border-color: #999;
+        }
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #ddd;
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 10;
+            display: none;
+            text-align: left;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .dropdown-item {
+            padding: 12px 15px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+        }
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+        .dropdown-item:hover {
+            background-color: #f0f0f0;
+        }
+        #result {
+            margin-top: 30px;
+            display: none;
+        }
+        .table-number {
+            font-size: 48px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Welcome!</h1>
+    <p>Please enter your name to find your table.</p>
+
+    <div class="search-wrapper">
+        <input type="text" id="searchInput" placeholder="Tap to search..." autocomplete="off">
+        <div id="dropdown" class="dropdown"></div>
+    </div>
+
+    <div id="result">
+        <p style="margin-bottom: 0;">You are seated at</p>
+        <div class="table-number">Table <span id="tableDisplay"></span></div>
+    </div>
+</div>
+
+<script>
+    let guestData = [];
+    const searchInput = document.getElementById('searchInput');
+    const dropdown = document.getElementById('dropdown');
+    const resultDiv = document.getElementById('result');
+    const tableDisplay = document.getElementById('tableDisplay');
+
+    // Fetch the baked JSON data when the page loads
+    fetch('guests.json')
+        .then(response => response.json())
+        .then(data => {
+            guestData = data;
+        })
+        .catch(error => console.error('Error loading guest list:', error));
+
+    searchInput.addEventListener('input', function() {
+        const query = this.value.toLowerCase().trim();
+        dropdown.innerHTML = '';
+        resultDiv.style.display = 'none';
+
+        if (query.length === 0) {
+            dropdown.style.display = 'none';
+            return;
+        }
+
+        // Filter guests (simple fuzzy match)
+        const matches = guestData.filter(guest => 
+            guest.name.toLowerCase().includes(query)
+        );
+
+        if (matches.length > 0) {
+            matches.forEach(guest => {
+                const item = document.createElement('div');
+                item.className = 'dropdown-item';
+                item.textContent = guest.name;
+                
+                // When a name is clicked
+                item.addEventListener('click', () => {
+                    searchInput.value = guest.name;
+                    dropdown.style.display = 'none';
+                    tableDisplay.textContent = guest.table;
+                    resultDiv.style.display = 'block';
+                });
+                
+                dropdown.appendChild(item);
+            });
+            dropdown.style.display = 'block';
+        } else {
+            const item = document.createElement('div');
+            item.className = 'dropdown-item';
+            item.textContent = 'No match found';
+            item.style.color = '#999';
+            dropdown.appendChild(item);
+            dropdown.style.display = 'block';
+        }
+    });
+
+    // Hide dropdown if clicked outside
+    document.addEventListener('click', function(e) {
+        if (e.target !== searchInput && e.target !== dropdown) {
+            dropdown.style.display = 'none';
+        }
+    });
+</script>
+
+</body>
+</html>

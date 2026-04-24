@@ -19,10 +19,9 @@
             /* Glassmorphism background */
             --card-bg: rgba(255, 255, 255, 0.65); 
             
-            /* --- ULTRA-PREMIUM SLOW ANIMATION SPEEDS --- */
-            --animation-speed: 1.2s; /* Base speed for inputs/hovers */
-            --dropdown-speed: 1.5s;  /* Slower dropdown roll */
-            --result-speed: 2.5s;    /* Dramatic, slow table reveal */
+            /* Speeds */
+            --animation-speed: 1.2s; 
+            --dropdown-speed: 1.2s;  
         }
 
         body {
@@ -43,7 +42,7 @@
         .ambient-background {
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            z-index: -2;
+            z-index: -3;
             overflow: hidden;
         }
 
@@ -55,32 +54,23 @@
             animation: float 25s infinite ease-in-out alternate;
         }
 
-        .orb-pink {
-            width: 500px; height: 500px;
-            background: rgba(229, 147, 184, 0.4);
-            top: -10%; left: -10%;
-        }
-
-        .orb-blue {
-            width: 600px; height: 600px;
-            background: rgba(165, 210, 226, 0.4);
-            bottom: -20%; right: -10%;
-            animation-delay: -5s;
-            animation-duration: 30s;
-        }
-
-        .orb-gold {
-            width: 300px; height: 300px;
-            background: rgba(212, 175, 55, 0.2);
-            top: 40%; left: 50%;
-            animation-delay: -10s;
-            animation-duration: 20s;
-        }
+        .orb-pink { width: 500px; height: 500px; background: rgba(229, 147, 184, 0.4); top: -10%; left: -10%; }
+        .orb-blue { width: 600px; height: 600px; background: rgba(165, 210, 226, 0.4); bottom: -20%; right: -10%; animation-delay: -5s; animation-duration: 30s; }
+        .orb-gold { width: 300px; height: 300px; background: rgba(212, 175, 55, 0.2); top: 40%; left: 50%; animation-delay: -10s; animation-duration: 20s; }
 
         @keyframes float {
             0% { transform: translate(0, 0) scale(1); }
             50% { transform: translate(50px, 80px) scale(1.05); }
             100% { transform: translate(-30px, 40px) scale(0.95); }
+        }
+
+        /* Canvas for Champagne Bubbles/Fairy Dust */
+        #particleCanvas {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -2;
+            pointer-events: none;
         }
 
         body::before {
@@ -97,19 +87,16 @@
             position: relative;
             width: 100%;
             max-width: 480px;
-            
             background: var(--card-bg);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.8);
-            
             padding: 60px 45px 50px 45px;
             border-radius: 30px;
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.04), inset 0 0 0 1px rgba(255,255,255,0.5);
             text-align: center;
             opacity: 0;
             transform: translateY(40px);
-            
             animation: cardLoad 2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
@@ -220,11 +207,8 @@
             transition: color var(--animation-speed) ease;
         }
         
-        input[type="text"]:focus + .search-icon {
-            color: var(--primary-accent);
-        }
+        input[type="text"]:focus + .search-icon { color: var(--primary-accent); }
 
-        /* --- UPDATED DROPDOWN SPEED --- */
         .dropdown {
             position: absolute;
             top: calc(100% + 5px);
@@ -236,18 +220,13 @@
             overflow-y: auto;
             z-index: 100;
             text-align: left;
-            /* Using the new --dropdown-speed variable */
             transition: max-height var(--dropdown-speed) ease-in-out, box-shadow var(--dropdown-speed) ease, opacity var(--dropdown-speed) ease;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
             opacity: 0;
             border: 1px solid rgba(232, 244, 249, 0);
         }
 
-        .dropdown.show {
-            max-height: 250px;
-            opacity: 1;
-            border: 1px solid rgba(232, 244, 249, 1);
-        }
+        .dropdown.show { max-height: 250px; opacity: 1; border: 1px solid rgba(232, 244, 249, 1); }
 
         .dropdown-item {
             padding: 18px 25px;
@@ -259,41 +238,15 @@
             transition: background-color 0.4s ease, padding-left 0.4s ease;
         }
 
-        .dropdown-item:last-child {
-            border-bottom: none;
-        }
+        .dropdown-item:last-child { border-bottom: none; }
+        .dropdown-item:hover { background-color: rgba(232, 244, 249, 0.5); color: var(--text-main); padding-left: 32px; }
+        .dropdown-item.no-match { color: var(--text-secondary); font-style: italic; cursor: default; }
+        .dropdown-item.no-match:hover { background-color: transparent; padding-left: 25px; }
 
-        .dropdown-item:hover {
-            background-color: rgba(232, 244, 249, 0.5);
-            color: var(--text-main);
-            padding-left: 32px; 
-        }
-
-        .dropdown-item.no-match {
-            color: var(--text-secondary);
-            font-style: italic;
-            cursor: default;
-        }
-
-        .dropdown-item.no-match:hover {
-            background-color: transparent;
-            padding-left: 25px;
-        }
-
-        /* --- UPDATED RESULT DISPLAY SPEED --- */
+        /* --- THE CINEMATIC RESULT REVEAL --- */
         #result {
             margin-top: 50px;
-            opacity: 0;
-            transform: translateY(15px);
-            display: none;
-            /* Using the new --result-speed variable */
-            transition: all var(--result-speed) cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        #result.show {
-            display: block;
-            opacity: 1;
-            transform: translateY(0);
+            display: none; 
         }
 
         .result-p {
@@ -302,6 +255,10 @@
             font-size: 18px;
             color: var(--text-secondary);
             margin-bottom: 15px;
+            opacity: 0;
+            transform: translateY(10px);
+            filter: blur(5px);
+            transition: all 1.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .table-display-wrapper {
@@ -317,37 +274,51 @@
             font-size: 24px; 
             color: var(--text-secondary);
             font-weight: 400;
+            opacity: 0;
+            transform: translateY(15px);
+            filter: blur(8px);
+            transition: all 1.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .table-number {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 80px; 
-            font-weight: 200; 
-            color: var(--primary-accent);
+            /* Changed to Serif font for clearer numbers */
+            font-family: 'Playfair Display', serif;
+            font-size: 72px; /* Slightly reduced size */
+            font-weight: 500; /* Standard weight so it's easily readable */
             line-height: 1;
+            
+            /* Gold Shimmer Effect over the Pink text */
+            background: linear-gradient(110deg, var(--primary-accent) 0%, var(--primary-accent) 40%, #f6d18a 50%, var(--primary-accent) 60%, var(--primary-accent) 100%);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: shine 5s linear infinite;
+
             display: inline-block;
-            /* Using the new --result-speed variable for the subtle pulse */
-            transition: transform var(--result-speed) ease;
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+            filter: blur(12px);
+            transition: all 2s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        #result.show .table-number {
-            transform: scale(1.05); 
+        @keyframes shine {
+            to { background-position: 200% center; }
         }
+
+        /* --- STAGGERED REVEAL ANIMATIONS TRIGGERED BY JS --- */
+        #result.show .result-p { opacity: 1; transform: translateY(0); filter: blur(0); }
+        #result.show .table-prefix { opacity: 1; transform: translateY(0); filter: blur(0); transition-delay: 0.2s; }
+        #result.show .table-number { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); transition-delay: 0.5s; }
+        #result.show .table-suffix { opacity: 1; transform: translateY(0); filter: blur(0); transition-delay: 0.8s; }
+
 
         @media (max-width: 480px) {
-            .container {
-                padding: 60px 30px 40px 30px;
-                border-radius: 24px;
-            }
-
-            .lang-toggle {
-                top: 20px;
-                right: 20px;
-            }
-
+            .container { padding: 60px 30px 40px 30px; border-radius: 24px; }
+            .lang-toggle { top: 20px; right: 20px; }
             h1 { font-size: 32px; }
             h1 small { letter-spacing: 3px; }
-            .table-number { font-size: 70px; }
+            .table-number { font-size: 60px; } /* Scaled down for mobile */
         }
     </style>
 </head>
@@ -358,6 +329,8 @@
     <div class="orb orb-blue"></div>
     <div class="orb orb-gold"></div>
 </div>
+
+<canvas id="particleCanvas"></canvas>
 
 <div class="container">
     <button id="langToggle" class="lang-toggle">繁體中文</button>
@@ -383,28 +356,53 @@
 </div>
 
 <script>
+    // --- Champagne Dust Particle Engine ---
+    const canvas = document.getElementById('particleCanvas');
+    const ctx = canvas.getContext('2d');
+    let width, height, particles;
+
+    function initParticles() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+        particles = [];
+        const particleCount = window.innerWidth < 480 ? 30 : 60; 
+
+        for (let i = 0; i < particleCount; i++) {
+            particles.push({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                r: Math.random() * 2 + 0.5, 
+                dy: Math.random() * 0.5 + 0.1, 
+                opacity: Math.random() * 0.5 + 0.1 
+            });
+        }
+    }
+
+    function animateParticles() {
+        ctx.clearRect(0, 0, width, height);
+        particles.forEach(p => {
+            p.y -= p.dy;
+            if (p.y < -10) { 
+                p.y = height + 10;
+                p.x = Math.random() * width;
+            }
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(255, 235, 240, ${p.opacity})`; 
+            ctx.fill();
+        });
+        requestAnimationFrame(animateParticles);
+    }
+    
+    window.addEventListener('resize', initParticles);
+    initParticles();
+    animateParticles();
+    // ----------------------------------------
+
     // --- Language Translation Setup ---
     const translations = {
-        en: {
-            btnLabel: "繁體中文",
-            names: "Patrick Siu & Annie Wu",
-            title: "Find Your Table",
-            placeholder: "Tap to search your name...",
-            result: "We are delighted to have you seated at",
-            noMatch: "No match found. Please try again.",
-            tPrefix: "Table",
-            tSuffix: ""
-        },
-        zh: {
-            btnLabel: "English",
-            names: "蕭柏力 & 鄔安安",
-            title: "尋找您的座位",
-            placeholder: "點擊搜尋您的名字...",
-            result: "我們很高興為您安排在",
-            noMatch: "找不到符合的名字。請再試一次。",
-            tPrefix: "第",
-            tSuffix: "桌"
-        }
+        en: { btnLabel: "繁體中文", names: "Patrick Siu & Annie Wu", title: "Find Your Table", placeholder: "Tap to search your name...", result: "We are delighted to have you seated at", noMatch: "No match found. Please try again.", tPrefix: "Table", tSuffix: "" },
+        zh: { btnLabel: "English", names: "蕭柏力 & 鄔安安", title: "尋找您的座位", placeholder: "點擊搜尋您的名字...", result: "我們很高興為您安排在", noMatch: "找不到符合的名字。請再試一次。", tPrefix: "第", tSuffix: "桌" }
     };
 
     let currentLang = 'en';
@@ -440,22 +438,20 @@
 
     fetch('guests.json?nocache=' + new Date().getTime())
         .then(response => response.json())
-        .then(data => {
-            guestData = data;
-        })
+        .then(data => { guestData = data; })
         .catch(error => console.error('Error loading guest list:', error));
 
     searchInput.addEventListener('input', function() {
         const query = this.value.toLowerCase().trim();
         dropdown.innerHTML = '';
+        
         resultDiv.classList.remove('show'); 
-
-        // UPDATED JS TIMEOUT: Waits 2.5s to match the new --result-speed before removing the display
+        
         setTimeout(() => {
             if (!resultDiv.classList.contains('show')) {
                 resultDiv.style.display = 'none';
             }
-        }, 2500);
+        }, 1500); 
 
         if (query.length === 0) {
             dropdown.classList.remove('show');
@@ -482,7 +478,7 @@
                     tableDisplay.textContent = cleanNumber || rawTable;
                     
                     resultDiv.style.display = 'block';
-                    // Give the browser a tiny fraction of a second to register the block display before fading in
+                    
                     setTimeout(() => resultDiv.classList.add('show'), 50);
                 });
                 

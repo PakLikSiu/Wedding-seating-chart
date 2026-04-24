@@ -305,7 +305,7 @@
 
         // Filter guests (simple fuzzy match)
         const matches = guestData.filter(guest => 
-            guest.name.toLowerCase().startsWith(query)
+            guest.name.toLowerCase().includes(query)
         );
 
         if (matches.length > 0) {

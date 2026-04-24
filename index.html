@@ -3,104 +3,271 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Find Your Seat</title>
+    <title>Patrick Siu & Annie Wu's Wedding | Find Your Seat</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            background-color: #f9f9f9;
-            color: #333;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 50px 20px;
-            margin: 0;
+        :root {
+            /* Colors inspired by your picture */
+            --light-pink: #fdf5f8; /* Very light pink */
+            --soft-pink-blue: #e8f4f9; /* Pale, soft blue-pink */
+            --primary-accent: #f0a3c4; /* Subdued, elegant pink accent */
+            --secondary-accent: #a5d2e2; /* Pale pink blue accent */
+            --text-main: #3d3d3d; /* Dark charcoal/navy for contrast */
+            --text-secondary: #777; /* Soft gray */
+            --card-bg: rgba(255, 255, 255, 0.95); /* Semi-transparent pure white */
+            --animation-speed: 0.4s;
         }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0 15px;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, var(--soft-pink-blue) 0%, var(--light-pink) 100%);
+            position: relative;
+        }
+
+        /* Subtle floral/watercolor texture overlay */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3E%3Cpath d="M 50 10 C 60 0, 70 0, 80 10 C 90 20, 90 30, 80 40 L 50 70 L 20 40 C 10 30, 10 20, 20 10 C 30 0, 40 0, 50 10 Z" fill="%23fdf5f8" fill-opacity="0.2"%3E%3C/path%3E%3C/svg%3E'); /* Faded heart motif */
+            background-repeat: repeat;
+            opacity: 0.15;
+            z-index: -1;
+        }
+
         .container {
             width: 100%;
-            max-width: 400px;
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            max-width: 440px;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
             text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: cardLoad var(--animation-speed) ease-out forwards;
+            transition: all var(--animation-speed) ease;
         }
+
+        /* Card load animation */
+        @keyframes cardLoad {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         h1 {
-            font-size: 24px;
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-style: normal;
+            font-size: 32px;
             margin-bottom: 5px;
+            line-height: 1.2;
+            color: var(--text-main);
         }
-        p {
-            color: #666;
+
+        .sub-header {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-style: italic;
+            color: var(--text-secondary);
             margin-bottom: 25px;
         }
-        .search-wrapper {
-            position: relative;
-            width: 100%;
+
+        h1 small {
+            display: block;
+            font-size: 16px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--primary-accent);
+            margin-bottom: 10px;
         }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
         input[type="text"] {
             width: 100%;
-            padding: 15px;
-            font-size: 16px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+            padding: 20px;
+            font-size: 18px;
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-main);
+            border: 2px solid var(--soft-pink-blue);
+            border-radius: 12px;
             box-sizing: border-box;
             outline: none;
+            transition: all var(--animation-speed) ease;
+            background-color: var(--light-pink);
         }
+
         input[type="text"]:focus {
-            border-color: #999;
+            border-color: var(--primary-accent);
+            background-color: white;
+            box-shadow: 0 0 15px rgba(240, 163, 196, 0.3);
         }
+
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary-accent);
+            font-size: 20px;
+            pointer-events: none;
+        }
+
         .dropdown {
             position: absolute;
             top: 100%;
             left: 0;
             right: 0;
             background: white;
-            border: 1px solid #ddd;
-            border-top: none;
-            border-radius: 0 0 8px 8px;
-            max-height: 200px;
+            border-radius: 0 0 12px 12px;
+            max-height: 0; /* Changed from display: none */
             overflow-y: auto;
-            z-index: 10;
-            display: none;
+            z-index: 100;
             text-align: left;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: max-height 0.3s ease-out, box-shadow 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         }
+
+        .dropdown.show {
+            max-height: 250px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--soft-pink-blue);
+            border-top: none;
+        }
+
         .dropdown-item {
-            padding: 12px 15px;
+            padding: 15px 20px;
             cursor: pointer;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid rgba(232, 244, 249, 0.5); /* var(--soft-pink-blue) with opacity */
+            font-size: 16px;
+            transition: background-color 0.2s ease;
         }
+
         .dropdown-item:last-child {
             border-bottom: none;
         }
+
         .dropdown-item:hover {
-            background-color: #f0f0f0;
+            background-color: var(--soft-pink-blue);
+            color: var(--text-main);
         }
+
+        .dropdown-item.no-match {
+            color: var(--text-secondary);
+            font-style: italic;
+            cursor: default;
+        }
+
+        .dropdown-item.no-match:hover {
+            background-color: transparent;
+        }
+
         #result {
-            margin-top: 30px;
+            margin-top: 40px;
+            opacity: 0;
+            transform: scale(0.9);
             display: none;
+            transition: all var(--animation-speed) ease-in-out;
         }
+
+        #result.show {
+            display: block;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .result-p {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 20px;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
         .table-number {
-            font-size: 48px;
-            font-weight: bold;
-            color: #2c3e50;
-            margin: 10px 0;
+            font-family: 'Playfair Display', serif;
+            font-size: 64px;
+            font-weight: 700;
+            color: var(--primary-accent);
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .table-number span {
+            display: inline-block;
+            transition: transform 0.5s ease;
+        }
+
+        /* Subtle result reveal effect */
+        #result.show .table-number span {
+            transform: scale(1.1);
+        }
+
+        .separator {
+            width: 50%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--secondary-accent), transparent);
+            margin: 30px auto;
+        }
+
+        /* Mobile Optimization */
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+                border-radius: 15px;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+
+            .sub-header {
+                font-size: 16px;
+            }
+
+            input[type="text"] {
+                padding: 16px;
+                font-size: 16px;
+            }
+
+            .table-number {
+                font-size: 50px;
+            }
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Welcome!</h1>
-    <p>Please enter your name to find your table.</p>
+    <h1><small>Patrick Siu & Annie Wu</small> Find Your Table</h1>
+    <div class="sub-header">A seating plan for May 3, 2026</div>
 
-    <div class="search-wrapper">
-        <input type="text" id="searchInput" placeholder="Tap to search..." autocomplete="off">
-        <div id="dropdown" class="dropdown"></div>
+    <div class="separator"></div>
+
+    <div class="input-group">
+        <input type="text" id="searchInput" placeholder="Tap to search your name..." autocomplete="off">
+        <div class="search-icon">&#128269;</div> <div id="dropdown" class="dropdown"></div>
     </div>
 
     <div id="result">
-        <p style="margin-bottom: 0;">You are seated at</p>
-        <div class="table-number">Table <span id="tableDisplay"></span></div>
+        <p class="result-p">We are delighted to have you seated at</p>
+        <div class="table-number"><span><span id="tableDisplay"></span></span></div>
     </div>
 </div>
 
@@ -111,8 +278,8 @@
     const resultDiv = document.getElementById('result');
     const tableDisplay = document.getElementById('tableDisplay');
 
-    // Fetch the baked JSON data when the page loads
-    fetch('guests.json')
+    // Fetch the baked JSON data with Cache-Buster
+    fetch('guests.json?nocache=' + new Date().getTime())
         .then(response => response.json())
         .then(data => {
             guestData = data;
@@ -122,10 +289,17 @@
     searchInput.addEventListener('input', function() {
         const query = this.value.toLowerCase().trim();
         dropdown.innerHTML = '';
-        resultDiv.style.display = 'none';
+        resultDiv.classList.remove('show'); // Hide result smoothly
+
+        // Short timeout to allow hide animation to start before display: none
+        setTimeout(() => {
+            if (!resultDiv.classList.contains('show')) {
+                resultDiv.style.display = 'none';
+            }
+        }, 300);
 
         if (query.length === 0) {
-            dropdown.style.display = 'none';
+            dropdown.classList.remove('show');
             return;
         }
 
@@ -143,28 +317,30 @@
                 // When a name is clicked
                 item.addEventListener('click', () => {
                     searchInput.value = guest.name;
-                    dropdown.style.display = 'none';
+                    dropdown.classList.remove('show');
                     tableDisplay.textContent = guest.table;
                     resultDiv.style.display = 'block';
+                    
+                    // Add delay to ensure display: block is processed before opacity animation
+                    setTimeout(() => resultDiv.classList.add('show'), 10);
                 });
                 
                 dropdown.appendChild(item);
             });
-            dropdown.style.display = 'block';
+            dropdown.classList.add('show');
         } else {
             const item = document.createElement('div');
-            item.className = 'dropdown-item';
-            item.textContent = 'No match found';
-            item.style.color = '#999';
+            item.className = 'dropdown-item no-match';
+            item.textContent = 'No match found. Please try again.';
             dropdown.appendChild(item);
-            dropdown.style.display = 'block';
+            dropdown.classList.add('show');
         }
     });
 
     // Hide dropdown if clicked outside
     document.addEventListener('click', function(e) {
-        if (e.target !== searchInput && e.target !== dropdown) {
-            dropdown.style.display = 'none';
+        if (e.target !== searchInput && !dropdown.contains(e.target)) {
+            dropdown.classList.remove('show');
         }
     });
 </script>

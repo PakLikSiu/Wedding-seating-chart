@@ -7,14 +7,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Colors inspired by your picture */
-            --light-pink: #fdf5f8; /* Very light pink */
-            --soft-pink-blue: #e8f4f9; /* Pale, soft blue-pink */
-            --primary-accent: #f0a3c4; /* Subdued, elegant pink accent */
-            --secondary-accent: #a5d2e2; /* Pale pink blue accent */
-            --text-main: #3d3d3d; /* Dark charcoal/navy for contrast */
-            --text-secondary: #777; /* Soft gray */
-            --card-bg: rgba(255, 255, 255, 0.95); /* Semi-transparent pure white */
+            var(--light-pink): #fdf5f8; 
+            --soft-pink-blue: #e8f4f9; 
+            --primary-accent: #f0a3c4; 
+            --secondary-accent: #a5d2e2; 
+            --success-green: #95b8a2; /* Soft sage green for the table */
+            --table-gray: #e8e8e8; /* Soft gray for other tables */
+            --text-main: #3d3d3d; 
+            --text-secondary: #777; 
+            --card-bg: rgba(255, 255, 255, 0.95); 
             --animation-speed: 0.4s;
         }
 
@@ -26,18 +27,16 @@
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            padding: 0 15px;
-            overflow-x: hidden;
+            padding: 20px 15px;
             background: linear-gradient(135deg, var(--soft-pink-blue) 0%, var(--light-pink) 100%);
             position: relative;
         }
 
-        /* Subtle floral/watercolor texture overlay */
         body::before {
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3E%3Cpath d="M 50 10 C 60 0, 70 0, 80 10 C 90 20, 90 30, 80 40 L 50 70 L 20 40 C 10 30, 10 20, 20 10 C 30 0, 40 0, 50 10 Z" fill="%23fdf5f8" fill-opacity="0.2"%3E%3C/path%3E%3C/svg%3E'); /* Faded heart motif */
+            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3E%3Cpath d="M 50 10 C 60 0, 70 0, 80 10 C 90 20, 90 30, 80 40 L 50 70 L 20 40 C 10 30, 10 20, 20 10 C 30 0, 40 0, 50 10 Z" fill="%23fdf5f8" fill-opacity="0.2"%3E%3C/path%3E%3C/svg%3E');
             background-repeat: repeat;
             opacity: 0.15;
             z-index: -1;
@@ -45,31 +44,20 @@
 
         .container {
             width: 100%;
-            max-width: 440px;
+            max-width: 500px;
             background: var(--card-bg);
             padding: 40px;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
             text-align: center;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: cardLoad var(--animation-speed) ease-out forwards;
-            transition: all var(--animation-speed) ease;
-        }
-
-        /* Card load animation */
-        @keyframes cardLoad {
-            to { opacity: 1; transform: translateY(0); }
         }
 
         h1 {
             font-family: 'Playfair Display', serif;
             font-weight: 700;
-            font-style: normal;
             font-size: 32px;
             margin-bottom: 5px;
             line-height: 1.2;
-            color: var(--text-main);
         }
 
         .sub-header {
@@ -94,6 +82,7 @@
         .input-group {
             position: relative;
             margin-bottom: 20px;
+            z-index: 10;
         }
 
         input[type="text"] {
@@ -107,23 +96,11 @@
             box-sizing: border-box;
             outline: none;
             transition: all var(--animation-speed) ease;
-            background-color: var(--light-pink);
         }
 
         input[type="text"]:focus {
             border-color: var(--primary-accent);
-            background-color: white;
             box-shadow: 0 0 15px rgba(240, 163, 196, 0.3);
-        }
-
-        .search-icon {
-            position: absolute;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--secondary-accent);
-            font-size: 20px;
-            pointer-events: none;
         }
 
         .dropdown {
@@ -133,9 +110,8 @@
             right: 0;
             background: white;
             border-radius: 0 0 12px 12px;
-            max-height: 0; /* Changed from display: none */
+            max-height: 0;
             overflow-y: auto;
-            z-index: 100;
             text-align: left;
             transition: max-height 0.3s ease-out, box-shadow 0.3s ease;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
@@ -151,42 +127,23 @@
         .dropdown-item {
             padding: 15px 20px;
             cursor: pointer;
-            border-bottom: 1px solid rgba(232, 244, 249, 0.5); /* var(--soft-pink-blue) with opacity */
-            font-size: 16px;
-            transition: background-color 0.2s ease;
-        }
-
-        .dropdown-item:last-child {
-            border-bottom: none;
+            border-bottom: 1px solid rgba(232, 244, 249, 0.5);
         }
 
         .dropdown-item:hover {
             background-color: var(--soft-pink-blue);
-            color: var(--text-main);
-        }
-
-        .dropdown-item.no-match {
-            color: var(--text-secondary);
-            font-style: italic;
-            cursor: default;
-        }
-
-        .dropdown-item.no-match:hover {
-            background-color: transparent;
         }
 
         #result {
-            margin-top: 40px;
-            opacity: 0;
-            transform: scale(0.9);
+            margin-top: 20px;
             display: none;
-            transition: all var(--animation-speed) ease-in-out;
+            opacity: 0;
+            transition: opacity 0.5s ease;
         }
 
         #result.show {
             display: block;
             opacity: 1;
-            transform: scale(1);
         }
 
         .result-p {
@@ -194,61 +151,58 @@
             font-style: italic;
             font-size: 20px;
             color: var(--text-secondary);
-            margin-bottom: 10px;
+            margin-bottom: 5px;
         }
 
         .table-number {
             font-family: 'Playfair Display', serif;
-            font-size: 64px;
+            font-size: 42px;
             font-weight: 700;
             color: var(--primary-accent);
-            text-transform: uppercase;
-            letter-spacing: -1px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            margin-bottom: 20px;
         }
 
-        .table-number span {
-            display: inline-block;
-            transition: transform 0.5s ease;
+        /* SVG Map Styling */
+        .map-container {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            background: #fafafa;
+            border-radius: 12px;
+            padding: 15px;
+            box-sizing: border-box;
+            border: 1px solid #eee;
         }
 
-        /* Subtle result reveal effect */
-        #result.show .table-number span {
-            transform: scale(1.1);
+        .table-shape {
+            fill: var(--table-gray);
+            transition: fill 0.4s ease;
+            stroke: #fff;
+            stroke-width: 2px;
         }
 
-        .separator {
-            width: 50%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--secondary-accent), transparent);
-            margin: 30px auto;
+        .table-text {
+            fill: #777;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            text-anchor: middle;
+            dominant-baseline: central;
+            pointer-events: none;
         }
 
-        /* Mobile Optimization */
+        .table-shape.active {
+            fill: var(--success-green);
+        }
+        
+        .table-group.active .table-text {
+            fill: #fff;
+        }
+
         @media (max-width: 480px) {
-            .container {
-                padding: 30px 20px;
-                border-radius: 15px;
-            }
-
-            h1 {
-                font-size: 26px;
-            }
-
-            .sub-header {
-                font-size: 16px;
-            }
-
-            input[type="text"] {
-                padding: 16px;
-                font-size: 16px;
-            }
-
-            .table-number {
-                font-size: 50px;
-            }
+            .container { padding: 30px 20px; }
+            h1 { font-size: 26px; }
+            .table-number { font-size: 36px; }
         }
     </style>
 </head>
@@ -258,16 +212,54 @@
     <h1><small>Patrick Siu & Annie Wu</small> Find Your Table</h1>
     <div class="sub-header">A seating plan for May 3, 2026</div>
 
-    <div class="separator"></div>
-
     <div class="input-group">
         <input type="text" id="searchInput" placeholder="Tap to search your name..." autocomplete="off">
-        <div class="search-icon">&#128269;</div> <div id="dropdown" class="dropdown"></div>
+        <div id="dropdown" class="dropdown"></div>
     </div>
 
     <div id="result">
-        <p class="result-p">We are delighted to have you seated at</p>
-        <div class="table-number"><span><span id="tableDisplay"></span></span></div>
+        <p class="result-p">You are seated at</p>
+        <div class="table-number">Table <span id="tableDisplay"></span></div>
+        
+        <div class="map-container">
+            <svg viewBox="0 0 300 240" width="100%" height="100%">
+                <rect x="100" y="70" width="100" height="100" fill="#f0f0f0" rx="8" />
+                <text x="150" y="120" fill="#bbb" font-size="10" text-anchor="middle" font-family="Montserrat">DANCE FLOOR</text>
+
+                <g class="table-group" id="group-1">
+                    <circle id="shape-1" class="table-shape" cx="50" cy="50" r="22" />
+                    <text class="table-text" x="50" y="50">1</text>
+                </g>
+                <g class="table-group" id="group-2">
+                    <circle id="shape-2" class="table-shape" cx="150" cy="30" r="22" />
+                    <text class="table-text" x="150" y="30">2</text>
+                </g>
+                <g class="table-group" id="group-3">
+                    <circle id="shape-3" class="table-shape" cx="250" cy="50" r="22" />
+                    <text class="table-text" x="250" y="50">3</text>
+                </g>
+                <g class="table-group" id="group-4">
+                    <circle id="shape-4" class="table-shape" cx="40" cy="120" r="22" />
+                    <text class="table-text" x="40" y="120">4</text>
+                </g>
+                <g class="table-group" id="group-5">
+                    <circle id="shape-5" class="table-shape" cx="260" cy="120" r="22" />
+                    <text class="table-text" x="260" y="120">5</text>
+                </g>
+                <g class="table-group" id="group-6">
+                    <circle id="shape-6" class="table-shape" cx="50" cy="190" r="22" />
+                    <text class="table-text" x="50" y="190">6</text>
+                </g>
+                <g class="table-group" id="group-12">
+                    <circle id="shape-12" class="table-shape" cx="150" cy="210" r="22" />
+                    <text class="table-text" x="150" y="210">12</text>
+                </g>
+                <g class="table-group" id="group-8">
+                    <circle id="shape-8" class="table-shape" cx="250" cy="190" r="22" />
+                    <text class="table-text" x="250" y="190">8</text>
+                </g>
+            </svg>
+        </div>
     </div>
 </div>
 
@@ -278,24 +270,17 @@
     const resultDiv = document.getElementById('result');
     const tableDisplay = document.getElementById('tableDisplay');
 
-    // Fetch the baked JSON data with Cache-Buster
     fetch('guests.json?nocache=' + new Date().getTime())
         .then(response => response.json())
-        .then(data => {
-            guestData = data;
-        })
+        .then(data => { guestData = data; })
         .catch(error => console.error('Error loading guest list:', error));
 
     searchInput.addEventListener('input', function() {
         const query = this.value.toLowerCase().trim();
         dropdown.innerHTML = '';
-        resultDiv.classList.remove('show'); // Hide result smoothly
-
-        // Short timeout to allow hide animation to start before display: none
+        resultDiv.classList.remove('show'); 
         setTimeout(() => {
-            if (!resultDiv.classList.contains('show')) {
-                resultDiv.style.display = 'none';
-            }
+            if (!resultDiv.classList.contains('show')) resultDiv.style.display = 'none';
         }, 300);
 
         if (query.length === 0) {
@@ -303,7 +288,7 @@
             return;
         }
 
-        // Filter guests (simple fuzzy match)
+        // Google-style Prefix match
         const matches = guestData.filter(guest => 
             guest.name.toLowerCase().startsWith(query)
         );
@@ -314,30 +299,36 @@
                 item.className = 'dropdown-item';
                 item.textContent = guest.name;
                 
-                // When a name is clicked
                 item.addEventListener('click', () => {
                     searchInput.value = guest.name;
                     dropdown.classList.remove('show');
-                    tableDisplay.textContent = guest.table;
-                    resultDiv.style.display = 'block';
                     
-                    // Add delay to ensure display: block is processed before opacity animation
+                    // Extract just the number if your JSON says "Table 1" or just "1"
+                    const tableNum = guest.table.replace(/\D/g,''); 
+                    tableDisplay.textContent = tableNum;
+                    
+                    // Map Logic: Reset all tables to gray
+                    document.querySelectorAll('.table-shape').forEach(el => el.classList.remove('active'));
+                    document.querySelectorAll('.table-group').forEach(el => el.classList.remove('active'));
+                    
+                    // Find the assigned table and turn it green
+                    const targetShape = document.getElementById('shape-' + tableNum);
+                    const targetGroup = document.getElementById('group-' + tableNum);
+                    if (targetShape && targetGroup) {
+                        targetShape.classList.add('active');
+                        targetGroup.classList.add('active');
+                    }
+                    
+                    resultDiv.style.display = 'block';
                     setTimeout(() => resultDiv.classList.add('show'), 10);
                 });
                 
                 dropdown.appendChild(item);
             });
             dropdown.classList.add('show');
-        } else {
-            const item = document.createElement('div');
-            item.className = 'dropdown-item no-match';
-            item.textContent = 'No match found. Please try again.';
-            dropdown.appendChild(item);
-            dropdown.classList.add('show');
         }
     });
 
-    // Hide dropdown if clicked outside
     document.addEventListener('click', function(e) {
         if (e.target !== searchInput && !dropdown.contains(e.target)) {
             dropdown.classList.remove('show');

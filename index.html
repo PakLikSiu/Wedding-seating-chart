@@ -4,24 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Patrick Siu & Annie Wu's Wedding | Find Your Seat</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
     <style>
         :root {
             /* Elegant, soft palette */
             --light-pink: #fdf5f8; 
             --soft-pink-blue: #e8f4f9; 
-            --primary-accent: #e593b8; /* Slightly deeper elegant pink */
+            --primary-accent: #e593b8; 
             --secondary-accent: #a5d2e2; 
-            --champagne-gold: #d4af37; /* Fancy accent */
-            --text-main: #3d3d3d; 
-            --text-secondary: #777; 
+            --champagne-gold: #d4af37; 
+            --text-main: #2c2c2c; 
+            --text-secondary: #888; 
             
             /* Glassmorphism background */
-            --card-bg: rgba(255, 255, 255, 0.75); 
+            --card-bg: rgba(255, 255, 255, 0.65); 
             
-            /* SLOWER ANIMATIONS */
-            --animation-speed: 1s; 
-            --fast-speed: 0.6s;
+            /* --- ULTRA-PREMIUM SLOW ANIMATION SPEEDS --- */
+            --animation-speed: 1.2s; /* Base speed for inputs/hovers */
+            --dropdown-speed: 1.5s;  /* Slower dropdown roll */
+            --result-speed: 2.5s;    /* Dramatic, slow table reveal */
         }
 
         body {
@@ -33,53 +34,83 @@
             min-height: 100vh;
             margin: 0;
             padding: 0 15px;
-            overflow-x: hidden;
-            
-            /* Animated, breathing gradient background */
-            background: linear-gradient(-45deg, var(--soft-pink-blue), var(--light-pink), #ffffff, #f4e1e8);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+            overflow: hidden; 
+            background-color: #faf7f8;
             position: relative;
         }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        /* --- LUXURY AMBIENT BACKGROUND ANIMATION --- */
+        .ambient-background {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: -2;
+            overflow: hidden;
         }
 
-        /* Subtle floral/watercolor texture overlay */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.5;
+            animation: float 25s infinite ease-in-out alternate;
+        }
+
+        .orb-pink {
+            width: 500px; height: 500px;
+            background: rgba(229, 147, 184, 0.4);
+            top: -10%; left: -10%;
+        }
+
+        .orb-blue {
+            width: 600px; height: 600px;
+            background: rgba(165, 210, 226, 0.4);
+            bottom: -20%; right: -10%;
+            animation-delay: -5s;
+            animation-duration: 30s;
+        }
+
+        .orb-gold {
+            width: 300px; height: 300px;
+            background: rgba(212, 175, 55, 0.2);
+            top: 40%; left: 50%;
+            animation-delay: -10s;
+            animation-duration: 20s;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(50px, 80px) scale(1.05); }
+            100% { transform: translate(-30px, 40px) scale(0.95); }
+        }
+
         body::before {
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3E%3Cpath d="M 50 10 C 60 0, 70 0, 80 10 C 90 20, 90 30, 80 40 L 50 70 L 20 40 C 10 30, 10 20, 20 10 C 30 0, 40 0, 50 10 Z" fill="%23e593b8" fill-opacity="0.1"%3E%3C/path%3E%3C/svg%3E');
-            background-repeat: repeat;
-            opacity: 0.15;
+            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="4" height="4" viewBox="0 0 4 4"%3E%3Crect x="0" y="0" width="4" height="4" fill="none"%3E%3C/rect%3E%3Crect x="0" y="0" width="1" height="1" fill="rgba(0,0,0,0.02)"%3E%3C/rect%3E%3C/svg%3E');
             z-index: -1;
+            pointer-events: none;
         }
 
+        /* --- THE MAIN CARD --- */
         .container {
             position: relative;
             width: 100%;
-            max-width: 460px;
+            max-width: 480px;
             
-            /* Fancy Glass effect */
             background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
             
-            padding: 55px 40px 45px 40px;
-            border-radius: 24px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.03), 0 0 30px rgba(229, 147, 184, 0.1);
+            padding: 60px 45px 50px 45px;
+            border-radius: 30px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.04), inset 0 0 0 1px rgba(255,255,255,0.5);
             text-align: center;
             opacity: 0;
-            transform: translateY(30px);
+            transform: translateY(40px);
             
-            /* Slower floating load */
-            animation: cardLoad 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-            transition: all var(--animation-speed) ease;
+            animation: cardLoad 2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         @keyframes cardLoad {
@@ -88,19 +119,19 @@
 
         .lang-toggle {
             position: absolute;
-            top: 20px;
-            right: 25px;
-            background: rgba(255, 255, 255, 0.5);
-            border: 1px solid rgba(212, 175, 55, 0.4); /* Champagne border */
+            top: 25px;
+            right: 30px;
+            background: transparent;
+            border: 1px solid rgba(212, 175, 55, 0.4); 
             color: var(--text-secondary);
             font-family: 'Montserrat', sans-serif;
-            font-size: 11px;
-            letter-spacing: 1px;
+            font-size: 10px;
+            letter-spacing: 2px;
             text-transform: uppercase;
-            padding: 6px 12px;
+            padding: 6px 14px;
             border-radius: 20px;
             cursor: pointer;
-            transition: all var(--fast-speed) ease;
+            transition: all var(--animation-speed) ease;
         }
 
         .lang-toggle:hover {
@@ -111,35 +142,31 @@
 
         h1 {
             font-family: 'Playfair Display', serif;
-            font-weight: 600;
-            font-style: normal;
-            font-size: 34px;
+            font-weight: 500;
+            font-size: 36px;
             margin-bottom: 5px;
-            line-height: 1.2;
+            line-height: 1.3;
             color: var(--text-main);
             letter-spacing: -0.5px;
         }
 
         h1 small {
             display: block;
-            font-size: 15px;
+            font-size: 13px;
             font-family: 'Montserrat', sans-serif;
-            font-weight: 400;
+            font-weight: 300;
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 5px;
             color: var(--primary-accent);
-            margin-bottom: 12px;
-            transition: all var(--fast-speed) ease;
+            margin-bottom: 16px;
         }
 
-        /* Fancy Separator with Diamond */
         .separator {
-            width: 65%;
+            width: 70%;
             height: 1px;
-            background: linear-gradient(90deg, transparent, var(--champagne-gold), transparent);
-            margin: 35px auto;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.5), transparent);
+            margin: 40px auto;
             position: relative;
-            opacity: 0.6;
         }
 
         .separator::after {
@@ -149,47 +176,46 @@
             left: 50%;
             transform: translate(-50%, -50%);
             color: var(--champagne-gold);
-            font-size: 12px;
-            /* Match the glass background */
-            background: rgba(255, 255, 255, 0.1); 
-            padding: 0 10px;
+            font-size: 10px;
+            background: #fbf9fa; 
+            padding: 0 15px;
+            border-radius: 50%;
         }
 
         .input-group {
             position: relative;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
         }
 
         input[type="text"] {
             width: 100%;
-            padding: 22px 20px;
-            font-size: 17px;
+            padding: 22px 25px;
+            font-size: 16px;
             font-weight: 300;
             font-family: 'Montserrat', sans-serif;
             color: var(--text-main);
-            border: 1px solid rgba(165, 210, 226, 0.5); /* delicate border */
-            border-radius: 12px;
+            border: 1px solid rgba(165, 210, 226, 0.4); 
+            border-radius: 16px;
             box-sizing: border-box;
             outline: none;
-            
-            /* Slower glow transition */
             transition: all var(--animation-speed) ease;
-            background-color: rgba(255, 255, 255, 0.6);
+            background-color: rgba(255, 255, 255, 0.7);
+            letter-spacing: 0.5px;
         }
 
         input[type="text"]:focus {
             border-color: var(--primary-accent);
             background-color: white;
-            box-shadow: 0 0 20px rgba(229, 147, 184, 0.2);
+            box-shadow: 0 10px 25px rgba(229, 147, 184, 0.15);
         }
 
         .search-icon {
             position: absolute;
-            right: 20px;
+            right: 25px;
             top: 50%;
             transform: translateY(-50%);
-            color: var(--secondary-accent);
-            font-size: 20px;
+            color: #ccc;
+            font-size: 18px;
             pointer-events: none;
             transition: color var(--animation-speed) ease;
         }
@@ -198,37 +224,39 @@
             color: var(--primary-accent);
         }
 
+        /* --- UPDATED DROPDOWN SPEED --- */
         .dropdown {
             position: absolute;
-            top: 100%;
+            top: calc(100% + 5px);
             left: 0;
             right: 0;
             background: rgba(255, 255, 255, 0.98);
-            border-radius: 0 0 12px 12px;
+            border-radius: 16px;
             max-height: 0; 
             overflow-y: auto;
             z-index: 100;
             text-align: left;
-            
-            /* Slower dropdown scroll */
-            transition: max-height var(--animation-speed) ease-out, box-shadow var(--animation-speed) ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            /* Using the new --dropdown-speed variable */
+            transition: max-height var(--dropdown-speed) ease-in-out, box-shadow var(--dropdown-speed) ease, opacity var(--dropdown-speed) ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            opacity: 0;
+            border: 1px solid rgba(232, 244, 249, 0);
         }
 
         .dropdown.show {
             max-height: 250px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(232, 244, 249, 0.8);
-            border-top: none;
+            opacity: 1;
+            border: 1px solid rgba(232, 244, 249, 1);
         }
 
         .dropdown-item {
-            padding: 18px 20px;
+            padding: 18px 25px;
             cursor: pointer;
-            border-bottom: 1px solid rgba(232, 244, 249, 0.5); 
-            font-size: 16px;
+            border-bottom: 1px solid rgba(232, 244, 249, 0.6); 
+            font-size: 15px;
             font-weight: 400;
-            transition: background-color var(--fast-speed) ease, padding-left var(--fast-speed) ease;
+            letter-spacing: 0.5px;
+            transition: background-color 0.4s ease, padding-left 0.4s ease;
         }
 
         .dropdown-item:last-child {
@@ -236,9 +264,9 @@
         }
 
         .dropdown-item:hover {
-            background-color: var(--soft-pink-blue);
+            background-color: rgba(232, 244, 249, 0.5);
             color: var(--text-main);
-            padding-left: 25px; /* Fancy indentation effect on hover */
+            padding-left: 32px; 
         }
 
         .dropdown-item.no-match {
@@ -249,81 +277,87 @@
 
         .dropdown-item.no-match:hover {
             background-color: transparent;
-            padding-left: 20px;
+            padding-left: 25px;
         }
 
+        /* --- UPDATED RESULT DISPLAY SPEED --- */
         #result {
-            margin-top: 45px;
+            margin-top: 50px;
             opacity: 0;
-            transform: scale(0.95) translateY(10px);
+            transform: translateY(15px);
             display: none;
-            
-            /* Slower result fade-in */
-            transition: all var(--animation-speed) cubic-bezier(0.4, 0, 0.2, 1);
+            /* Using the new --result-speed variable */
+            transition: all var(--result-speed) cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         #result.show {
             display: block;
             opacity: 1;
-            transform: scale(1) translateY(0);
+            transform: translateY(0);
         }
 
         .result-p {
             font-family: 'Playfair Display', serif;
             font-style: italic;
-            font-size: 20px;
+            font-size: 18px;
             color: var(--text-secondary);
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .table-display-wrapper {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .table-prefix, .table-suffix {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 24px; 
+            color: var(--text-secondary);
+            font-weight: 400;
         }
 
         .table-number {
-            font-family: 'Playfair Display', serif;
-            font-size: 72px; /* Slightly larger */
-            font-weight: 600;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 80px; 
+            font-weight: 200; 
             color: var(--primary-accent);
-            text-transform: uppercase;
-            letter-spacing: -2px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .table-number span {
+            line-height: 1;
             display: inline-block;
-            transition: transform var(--animation-speed) ease;
+            /* Using the new --result-speed variable for the subtle pulse */
+            transition: transform var(--result-speed) ease;
         }
 
-        #result.show .table-number span {
-            transform: scale(1.05); /* Softer pulse */
+        #result.show .table-number {
+            transform: scale(1.05); 
         }
 
         @media (max-width: 480px) {
             .container {
-                padding: 50px 25px 35px 25px;
-                border-radius: 20px;
+                padding: 60px 30px 40px 30px;
+                border-radius: 24px;
             }
 
             .lang-toggle {
-                top: 15px;
-                right: 15px;
+                top: 20px;
+                right: 20px;
             }
 
-            h1 {
-                font-size: 28px;
-            }
-
-            input[type="text"] {
-                padding: 18px 15px;
-                font-size: 16px;
-            }
-
-            .table-number {
-                font-size: 56px;
-            }
+            h1 { font-size: 32px; }
+            h1 small { letter-spacing: 3px; }
+            .table-number { font-size: 70px; }
         }
     </style>
 </head>
 <body>
+
+<div class="ambient-background">
+    <div class="orb orb-pink"></div>
+    <div class="orb orb-blue"></div>
+    <div class="orb orb-gold"></div>
+</div>
 
 <div class="container">
     <button id="langToggle" class="lang-toggle">繁體中文</button>
@@ -340,7 +374,11 @@
 
     <div id="result">
         <p class="result-p" id="resultText">We are delighted to have you seated at</p>
-        <div class="table-number"><span><span id="tableDisplay"></span></span></div>
+        <div class="table-display-wrapper">
+            <div class="table-prefix" id="tablePrefix">Table</div>
+            <div class="table-number" id="tableDisplay"></div>
+            <div class="table-suffix" id="tableSuffix"></div>
+        </div>
     </div>
 </div>
 
@@ -353,7 +391,9 @@
             title: "Find Your Table",
             placeholder: "Tap to search your name...",
             result: "We are delighted to have you seated at",
-            noMatch: "No match found. Please try again."
+            noMatch: "No match found. Please try again.",
+            tPrefix: "Table",
+            tSuffix: ""
         },
         zh: {
             btnLabel: "English",
@@ -361,7 +401,9 @@
             title: "尋找您的座位",
             placeholder: "點擊搜尋您的名字...",
             result: "我們很高興為您安排在",
-            noMatch: "找不到符合的名字。請再試一次。"
+            noMatch: "找不到符合的名字。請再試一次。",
+            tPrefix: "第",
+            tSuffix: "桌"
         }
     };
 
@@ -371,6 +413,8 @@
     const titleText = document.getElementById('titleText');
     const searchInput = document.getElementById('searchInput');
     const resultText = document.getElementById('resultText');
+    const prefixText = document.getElementById('tablePrefix');
+    const suffixText = document.getElementById('tableSuffix');
 
     langToggleBtn.addEventListener('click', () => {
         currentLang = currentLang === 'en' ? 'zh' : 'en';
@@ -381,6 +425,8 @@
         titleText.textContent = t.title;
         searchInput.placeholder = t.placeholder;
         resultText.textContent = t.result;
+        prefixText.textContent = t.tPrefix;
+        suffixText.textContent = t.tSuffix;
 
         if (dropdown.classList.contains('show') && dropdown.innerHTML.includes('no-match')) {
             dropdown.innerHTML = `<div class="dropdown-item no-match">${t.noMatch}</div>`;
@@ -404,12 +450,12 @@
         dropdown.innerHTML = '';
         resultDiv.classList.remove('show'); 
 
-        // Increased timeout to match the slower hide animation (1000ms = 1s)
+        // UPDATED JS TIMEOUT: Waits 2.5s to match the new --result-speed before removing the display
         setTimeout(() => {
             if (!resultDiv.classList.contains('show')) {
                 resultDiv.style.display = 'none';
             }
-        }, 1000);
+        }, 2500);
 
         if (query.length === 0) {
             dropdown.classList.remove('show');
@@ -430,10 +476,13 @@
                     searchInput.value = guest.name;
                     dropdown.classList.remove('show');
                     
-                    tableDisplay.textContent = guest.table;
+                    const rawTable = guest.table;
+                    const cleanNumber = rawTable.replace(/[^0-9]/g, ''); 
+                    
+                    tableDisplay.textContent = cleanNumber || rawTable;
                     
                     resultDiv.style.display = 'block';
-                    // Slight delay so the display:block takes effect before fading in
+                    // Give the browser a tiny fraction of a second to register the block display before fading in
                     setTimeout(() => resultDiv.classList.add('show'), 50);
                 });
                 

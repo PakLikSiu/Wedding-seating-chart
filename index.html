@@ -4,18 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Patrick Siu & Annie Wu's Wedding | Find Your Seat</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Colors inspired by your picture */
+            /* Elegant, soft palette */
             --light-pink: #fdf5f8; 
             --soft-pink-blue: #e8f4f9; 
-            --primary-accent: #f0a3c4; 
+            --primary-accent: #e593b8; /* Slightly deeper elegant pink */
             --secondary-accent: #a5d2e2; 
+            --champagne-gold: #d4af37; /* Fancy accent */
             --text-main: #3d3d3d; 
             --text-secondary: #777; 
-            --card-bg: rgba(255, 255, 255, 0.95); 
-            --animation-speed: 0.4s;
+            
+            /* Glassmorphism background */
+            --card-bg: rgba(255, 255, 255, 0.75); 
+            
+            /* SLOWER ANIMATIONS */
+            --animation-speed: 1s; 
+            --fast-speed: 0.6s;
         }
 
         body {
@@ -28,8 +34,18 @@
             margin: 0;
             padding: 0 15px;
             overflow-x: hidden;
-            background: linear-gradient(135deg, var(--soft-pink-blue) 0%, var(--light-pink) 100%);
+            
+            /* Animated, breathing gradient background */
+            background: linear-gradient(-45deg, var(--soft-pink-blue), var(--light-pink), #ffffff, #f4e1e8);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
             position: relative;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         /* Subtle floral/watercolor texture overlay */
@@ -37,7 +53,7 @@
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3E%3Cpath d="M 50 10 C 60 0, 70 0, 80 10 C 90 20, 90 30, 80 40 L 50 70 L 20 40 C 10 30, 10 20, 20 10 C 30 0, 40 0, 50 10 Z" fill="%23fdf5f8" fill-opacity="0.2"%3E%3C/path%3E%3C/svg%3E');
+            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3E%3Cpath d="M 50 10 C 60 0, 70 0, 80 10 C 90 20, 90 30, 80 40 L 50 70 L 20 40 C 10 30, 10 20, 20 10 C 30 0, 40 0, 50 10 Z" fill="%23e593b8" fill-opacity="0.1"%3E%3C/path%3E%3C/svg%3E');
             background-repeat: repeat;
             opacity: 0.15;
             z-index: -1;
@@ -46,15 +62,23 @@
         .container {
             position: relative;
             width: 100%;
-            max-width: 440px;
+            max-width: 460px;
+            
+            /* Fancy Glass effect */
             background: var(--card-bg);
-            padding: 50px 40px 40px 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            
+            padding: 55px 40px 45px 40px;
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.03), 0 0 30px rgba(229, 147, 184, 0.1);
             text-align: center;
             opacity: 0;
-            transform: translateY(20px);
-            animation: cardLoad var(--animation-speed) ease-out forwards;
+            transform: translateY(30px);
+            
+            /* Slower floating load */
+            animation: cardLoad 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
             transition: all var(--animation-speed) ease;
         }
 
@@ -62,72 +86,101 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Language Toggle Button */
         .lang-toggle {
             position: absolute;
             top: 20px;
             right: 25px;
-            background: none;
-            border: 1px solid var(--secondary-accent);
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(212, 175, 55, 0.4); /* Champagne border */
             color: var(--text-secondary);
             font-family: 'Montserrat', sans-serif;
-            font-size: 12px;
-            padding: 5px 10px;
-            border-radius: 15px;
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 6px 12px;
+            border-radius: 20px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all var(--fast-speed) ease;
         }
 
         .lang-toggle:hover {
-            background: var(--soft-pink-blue);
-            color: var(--text-main);
+            background: var(--champagne-gold);
+            color: white;
+            border-color: var(--champagne-gold);
         }
 
         h1 {
             font-family: 'Playfair Display', serif;
-            font-weight: 700;
+            font-weight: 600;
             font-style: normal;
-            font-size: 32px;
+            font-size: 34px;
             margin-bottom: 5px;
             line-height: 1.2;
             color: var(--text-main);
+            letter-spacing: -0.5px;
         }
 
         h1 small {
             display: block;
-            font-size: 16px;
+            font-size: 15px;
             font-family: 'Montserrat', sans-serif;
-            font-weight: 500;
+            font-weight: 400;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             color: var(--primary-accent);
-            margin-bottom: 10px;
-            transition: all 0.3s ease;
+            margin-bottom: 12px;
+            transition: all var(--fast-speed) ease;
+        }
+
+        /* Fancy Separator with Diamond */
+        .separator {
+            width: 65%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--champagne-gold), transparent);
+            margin: 35px auto;
+            position: relative;
+            opacity: 0.6;
+        }
+
+        .separator::after {
+            content: '♦';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--champagne-gold);
+            font-size: 12px;
+            /* Match the glass background */
+            background: rgba(255, 255, 255, 0.1); 
+            padding: 0 10px;
         }
 
         .input-group {
             position: relative;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         input[type="text"] {
             width: 100%;
-            padding: 20px;
-            font-size: 18px;
+            padding: 22px 20px;
+            font-size: 17px;
+            font-weight: 300;
             font-family: 'Montserrat', sans-serif;
             color: var(--text-main);
-            border: 2px solid var(--soft-pink-blue);
+            border: 1px solid rgba(165, 210, 226, 0.5); /* delicate border */
             border-radius: 12px;
             box-sizing: border-box;
             outline: none;
+            
+            /* Slower glow transition */
             transition: all var(--animation-speed) ease;
-            background-color: var(--light-pink);
+            background-color: rgba(255, 255, 255, 0.6);
         }
 
         input[type="text"]:focus {
             border-color: var(--primary-accent);
             background-color: white;
-            box-shadow: 0 0 15px rgba(240, 163, 196, 0.3);
+            box-shadow: 0 0 20px rgba(229, 147, 184, 0.2);
         }
 
         .search-icon {
@@ -138,6 +191,11 @@
             color: var(--secondary-accent);
             font-size: 20px;
             pointer-events: none;
+            transition: color var(--animation-speed) ease;
+        }
+        
+        input[type="text"]:focus + .search-icon {
+            color: var(--primary-accent);
         }
 
         .dropdown {
@@ -145,29 +203,32 @@
             top: 100%;
             left: 0;
             right: 0;
-            background: white;
+            background: rgba(255, 255, 255, 0.98);
             border-radius: 0 0 12px 12px;
             max-height: 0; 
             overflow-y: auto;
             z-index: 100;
             text-align: left;
-            transition: max-height 0.3s ease-out, box-shadow 0.3s ease;
+            
+            /* Slower dropdown scroll */
+            transition: max-height var(--animation-speed) ease-out, box-shadow var(--animation-speed) ease;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         }
 
         .dropdown.show {
             max-height: 250px;
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
-            border: 1px solid var(--soft-pink-blue);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(232, 244, 249, 0.8);
             border-top: none;
         }
 
         .dropdown-item {
-            padding: 15px 20px;
+            padding: 18px 20px;
             cursor: pointer;
             border-bottom: 1px solid rgba(232, 244, 249, 0.5); 
             font-size: 16px;
-            transition: background-color 0.2s ease;
+            font-weight: 400;
+            transition: background-color var(--fast-speed) ease, padding-left var(--fast-speed) ease;
         }
 
         .dropdown-item:last-child {
@@ -177,6 +238,7 @@
         .dropdown-item:hover {
             background-color: var(--soft-pink-blue);
             color: var(--text-main);
+            padding-left: 25px; /* Fancy indentation effect on hover */
         }
 
         .dropdown-item.no-match {
@@ -187,20 +249,23 @@
 
         .dropdown-item.no-match:hover {
             background-color: transparent;
+            padding-left: 20px;
         }
 
         #result {
-            margin-top: 40px;
+            margin-top: 45px;
             opacity: 0;
-            transform: scale(0.9);
+            transform: scale(0.95) translateY(10px);
             display: none;
-            transition: all var(--animation-speed) ease-in-out;
+            
+            /* Slower result fade-in */
+            transition: all var(--animation-speed) cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         #result.show {
             display: block;
             opacity: 1;
-            transform: scale(1);
+            transform: scale(1) translateY(0);
         }
 
         .result-p {
@@ -213,11 +278,11 @@
 
         .table-number {
             font-family: 'Playfair Display', serif;
-            font-size: 64px;
-            font-weight: 700;
+            font-size: 72px; /* Slightly larger */
+            font-weight: 600;
             color: var(--primary-accent);
             text-transform: uppercase;
-            letter-spacing: -1px;
+            letter-spacing: -2px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -225,24 +290,17 @@
 
         .table-number span {
             display: inline-block;
-            transition: transform 0.5s ease;
+            transition: transform var(--animation-speed) ease;
         }
 
         #result.show .table-number span {
-            transform: scale(1.1);
-        }
-
-        .separator {
-            width: 50%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--secondary-accent), transparent);
-            margin: 30px auto;
+            transform: scale(1.05); /* Softer pulse */
         }
 
         @media (max-width: 480px) {
             .container {
-                padding: 45px 20px 30px 20px;
-                border-radius: 15px;
+                padding: 50px 25px 35px 25px;
+                border-radius: 20px;
             }
 
             .lang-toggle {
@@ -251,16 +309,16 @@
             }
 
             h1 {
-                font-size: 26px;
+                font-size: 28px;
             }
 
             input[type="text"] {
-                padding: 16px;
+                padding: 18px 15px;
                 font-size: 16px;
             }
 
             .table-number {
-                font-size: 50px;
+                font-size: 56px;
             }
         }
     </style>
@@ -315,30 +373,25 @@
     const resultText = document.getElementById('resultText');
 
     langToggleBtn.addEventListener('click', () => {
-        // Swap language
         currentLang = currentLang === 'en' ? 'zh' : 'en';
         const t = translations[currentLang];
 
-        // Update UI elements
         langToggleBtn.textContent = t.btnLabel;
         namesText.textContent = t.names;
         titleText.textContent = t.title;
         searchInput.placeholder = t.placeholder;
         resultText.textContent = t.result;
 
-        // Force dropdown update if it's currently showing "no match"
         if (dropdown.classList.contains('show') && dropdown.innerHTML.includes('no-match')) {
             dropdown.innerHTML = `<div class="dropdown-item no-match">${t.noMatch}</div>`;
         }
     });
-    // ----------------------------------
 
     let guestData = [];
     const dropdown = document.getElementById('dropdown');
     const resultDiv = document.getElementById('result');
     const tableDisplay = document.getElementById('tableDisplay');
 
-    // Fetch the baked JSON data with Cache-Buster
     fetch('guests.json?nocache=' + new Date().getTime())
         .then(response => response.json())
         .then(data => {
@@ -351,18 +404,18 @@
         dropdown.innerHTML = '';
         resultDiv.classList.remove('show'); 
 
+        // Increased timeout to match the slower hide animation (1000ms = 1s)
         setTimeout(() => {
             if (!resultDiv.classList.contains('show')) {
                 resultDiv.style.display = 'none';
             }
-        }, 300);
+        }, 1000);
 
         if (query.length === 0) {
             dropdown.classList.remove('show');
             return;
         }
 
-        // Google-style Prefix match (startsWith)
         const matches = guestData.filter(guest => 
             guest.name.toLowerCase().startsWith(query)
         );
@@ -373,16 +426,15 @@
                 item.className = 'dropdown-item';
                 item.textContent = guest.name;
                 
-                // When a name is clicked
                 item.addEventListener('click', () => {
                     searchInput.value = guest.name;
                     dropdown.classList.remove('show');
                     
-                    // Display table number
                     tableDisplay.textContent = guest.table;
                     
                     resultDiv.style.display = 'block';
-                    setTimeout(() => resultDiv.classList.add('show'), 10);
+                    // Slight delay so the display:block takes effect before fading in
+                    setTimeout(() => resultDiv.classList.add('show'), 50);
                 });
                 
                 dropdown.appendChild(item);
@@ -397,7 +449,6 @@
         }
     });
 
-    // Hide dropdown if clicked outside
     document.addEventListener('click', function(e) {
         if (e.target !== searchInput && !dropdown.contains(e.target)) {
             dropdown.classList.remove('show');

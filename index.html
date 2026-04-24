@@ -44,10 +44,11 @@
         }
 
         .container {
+            position: relative;
             width: 100%;
             max-width: 440px;
             background: var(--card-bg);
-            padding: 40px;
+            padding: 50px 40px 40px 40px;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
             text-align: center;
@@ -59,6 +60,27 @@
 
         @keyframes cardLoad {
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Language Toggle Button */
+        .lang-toggle {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            background: none;
+            border: 1px solid var(--secondary-accent);
+            color: var(--text-secondary);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 12px;
+            padding: 5px 10px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .lang-toggle:hover {
+            background: var(--soft-pink-blue);
+            color: var(--text-main);
         }
 
         h1 {
@@ -80,6 +102,7 @@
             letter-spacing: 2px;
             color: var(--primary-accent);
             margin-bottom: 10px;
+            transition: all 0.3s ease;
         }
 
         .input-group {
@@ -218,8 +241,13 @@
 
         @media (max-width: 480px) {
             .container {
-                padding: 30px 20px;
+                padding: 45px 20px 30px 20px;
                 border-radius: 15px;
+            }
+
+            .lang-toggle {
+                top: 15px;
+                right: 15px;
             }
 
             h1 {
@@ -240,7 +268,9 @@
 <body>
 
 <div class="container">
-    <h1><small>Patrick Siu & Annie Wu</small> Find Your Table</h1>
+    <button id="langToggle" class="lang-toggle">繁體中文</button>
+    
+    <h1><small id="namesText">Patrick Siu & Annie Wu</small> <span id="titleText">Find Your Table</span></h1>
 
     <div class="separator"></div>
 
@@ -251,14 +281,59 @@
     </div>
 
     <div id="result">
-        <p class="result-p">We are delighted to have you seated at</p>
+        <p class="result-p" id="resultText">We are delighted to have you seated at</p>
         <div class="table-number"><span><span id="tableDisplay"></span></span></div>
     </div>
 </div>
 
 <script>
-    let guestData = [];
+    // --- Language Translation Setup ---
+    const translations = {
+        en: {
+            btnLabel: "繁體中文",
+            names: "Patrick Siu & Annie Wu",
+            title: "Find Your Table",
+            placeholder: "Tap to search your name...",
+            result: "We are delighted to have you seated at",
+            noMatch: "No match found. Please try again."
+        },
+        zh: {
+            btnLabel: "English",
+            names: "蕭柏力 & 鄔安安",
+            title: "尋找您的座位",
+            placeholder: "點擊搜尋您的名字...",
+            result: "我們很高興為您安排在",
+            noMatch: "找不到符合的名字。請再試一次。"
+        }
+    };
+
+    let currentLang = 'en';
+    const langToggleBtn = document.getElementById('langToggle');
+    const namesText = document.getElementById('namesText');
+    const titleText = document.getElementById('titleText');
     const searchInput = document.getElementById('searchInput');
+    const resultText = document.getElementById('resultText');
+
+    langToggleBtn.addEventListener('click', () => {
+        // Swap language
+        currentLang = currentLang === 'en' ? 'zh' : 'en';
+        const t = translations[currentLang];
+
+        // Update UI elements
+        langToggleBtn.textContent = t.btnLabel;
+        namesText.textContent = t.names;
+        titleText.textContent = t.title;
+        searchInput.placeholder = t.placeholder;
+        resultText.textContent = t.result;
+
+        // Force dropdown update if it's currently showing "no match"
+        if (dropdown.classList.contains('show') && dropdown.innerHTML.includes('no-match')) {
+            dropdown.innerHTML = `<div class="dropdown-item no-match">${t.noMatch}</div>`;
+        }
+    });
+    // ----------------------------------
+
+    let guestData = [];
     const dropdown = document.getElementById('dropdown');
     const resultDiv = document.getElementById('result');
     const tableDisplay = document.getElementById('tableDisplay');
@@ -316,7 +391,7 @@
         } else {
             const item = document.createElement('div');
             item.className = 'dropdown-item no-match';
-            item.textContent = 'No match found. Please try again.';
+            item.textContent = translations[currentLang].noMatch;
             dropdown.appendChild(item);
             dropdown.classList.add('show');
         }

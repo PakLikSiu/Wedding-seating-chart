@@ -296,6 +296,14 @@
     "table": "Table 8"
   },
   {
+    "name": "Gavin Siu",
+    "table": "Table 8"
+  },
+  {
+    "name": "Man Ki Chan",
+    "table": "Table 8"
+  },
+  {
     "name": "Carol Zhu",
     "table": "Table 9"
   },
@@ -592,15 +600,15 @@
     "table": "Table 16"
   },
   {
-    "name": "Katelyn Tzang",
+    "name": "Jeremy Huang",
     "table": "Table 17"
   },
   {
-    "name": "Sophie Or",
+    "name": "Cyrus Yung",
     "table": "Table 17"
   },
   {
-    "name": "Alaina Yung",
+    "name": "Gabby Shum",
     "table": "Table 17"
   },
   {
@@ -636,11 +644,7 @@
     "table": "Table 18"
   },
   {
-    "name": "Jaden Lau",
-    "table": "Table 18"
-  },
-  {
-    "name": "Ian Lau",
+    "name": "Ambros Lee",
     "table": "Table 18"
   },
   {
@@ -648,19 +652,27 @@
     "table": "Table 18"
   },
   {
-    "name": "Ambros Lee",
+    "name": "Ian Lau",
     "table": "Table 18"
   },
   {
-    "name": "Cyrus Yung",
-    "table": "Table 18"
-  },
-  {
-    "name": "Jeremy Huang",
+    "name": "Jaden Lau",
     "table": "Table 18"
   },
   {
     "name": "Ivan Cheung",
+    "table": "Table 18"
+  },
+  {
+    "name": "Alaina Yung",
+    "table": "Table 18"
+  },
+  {
+    "name": "Katelyn Tzang",
+    "table": "Table 18"
+  },
+  {
+    "name": "Sophie Or",
     "table": "Table 18"
   }
 ]

@@ -7,8 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Elegant, soft palette */
-            --light-pink: #fdf5f8; 
+            var(--light-pink): #fdf5f8; 
             --soft-pink-blue: #e8f4f9; 
             --primary-accent: #e593b8; 
             --secondary-accent: #a5d2e2; 
@@ -16,10 +15,8 @@
             --text-main: #2c2c2c; 
             --text-secondary: #888; 
             
-            /* Glassmorphism background */
             --card-bg: rgba(255, 255, 255, 0.65); 
             
-            /* Speeds */
             --animation-speed: 1.2s; 
             --dropdown-speed: 1.2s;  
         }
@@ -38,7 +35,6 @@
             position: relative;
         }
 
-        /* --- LUXURY AMBIENT BACKGROUND ANIMATION --- */
         .ambient-background {
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -64,7 +60,6 @@
             100% { transform: translate(-30px, 40px) scale(0.95); }
         }
 
-        /* Canvas for Champagne Bubbles/Fairy Dust */
         #particleCanvas {
             position: absolute;
             top: 0; left: 0;
@@ -82,7 +77,6 @@
             pointer-events: none;
         }
 
-        /* --- THE MAIN CARD --- */
         .container {
             position: relative;
             width: 100%;
@@ -243,7 +237,6 @@
         .dropdown-item.no-match { color: var(--text-secondary); font-style: italic; cursor: default; }
         .dropdown-item.no-match:hover { background-color: transparent; padding-left: 25px; }
 
-        /* --- THE CINEMATIC RESULT REVEAL --- */
         #result {
             margin-top: 50px;
             display: none; 
@@ -281,13 +274,14 @@
         }
 
         .table-number {
-            /* Changed to Serif font for clearer numbers */
             font-family: 'Playfair Display', serif;
-            font-size: 72px; /* Slightly reduced size */
-            font-weight: 500; /* Standard weight so it's easily readable */
-            line-height: 1;
+            font-size: 72px; 
+            font-weight: 500; 
             
-            /* Gold Shimmer Effect over the Pink text */
+            /* BUG FIX 1: Prevent clipping of numbers like 3 and 8 */
+            line-height: 1.2; 
+            padding-bottom: 10px; 
+            
             background: linear-gradient(110deg, var(--primary-accent) 0%, var(--primary-accent) 40%, #f6d18a 50%, var(--primary-accent) 60%, var(--primary-accent) 100%);
             background-size: 200% auto;
             color: transparent;
@@ -306,19 +300,17 @@
             to { background-position: 200% center; }
         }
 
-        /* --- STAGGERED REVEAL ANIMATIONS TRIGGERED BY JS --- */
         #result.show .result-p { opacity: 1; transform: translateY(0); filter: blur(0); }
         #result.show .table-prefix { opacity: 1; transform: translateY(0); filter: blur(0); transition-delay: 0.2s; }
         #result.show .table-number { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); transition-delay: 0.5s; }
         #result.show .table-suffix { opacity: 1; transform: translateY(0); filter: blur(0); transition-delay: 0.8s; }
-
 
         @media (max-width: 480px) {
             .container { padding: 60px 30px 40px 30px; border-radius: 24px; }
             .lang-toggle { top: 20px; right: 20px; }
             h1 { font-size: 32px; }
             h1 small { letter-spacing: 3px; }
-            .table-number { font-size: 60px; } /* Scaled down for mobile */
+            .table-number { font-size: 60px; } 
         }
     </style>
 </head>
@@ -356,7 +348,6 @@
 </div>
 
 <script>
-    // --- Champagne Dust Particle Engine ---
     const canvas = document.getElementById('particleCanvas');
     const ctx = canvas.getContext('2d');
     let width, height, particles;
@@ -397,9 +388,7 @@
     window.addEventListener('resize', initParticles);
     initParticles();
     animateParticles();
-    // ----------------------------------------
 
-    // --- Language Translation Setup ---
     const translations = {
         en: { btnLabel: "繁體中文", names: "Patrick Siu & Annie Wu", title: "Find Your Table", placeholder: "Tap to search your name...", result: "We are delighted to have you seated at", noMatch: "No match found. Please try again.", tPrefix: "Table", tSuffix: "" },
         zh: { btnLabel: "English", names: "蕭柏力 & 鄔安安", title: "尋找您的座位", placeholder: "點擊搜尋您的名字...", result: "我們很高興為您安排在", noMatch: "找不到符合的名字。請再試一次。", tPrefix: "第", tSuffix: "桌" }
@@ -435,6 +424,9 @@
     const dropdown = document.getElementById('dropdown');
     const resultDiv = document.getElementById('result');
     const tableDisplay = document.getElementById('tableDisplay');
+    
+    // BUG FIX 2: Create a variable to hold the hide timer so we can cancel it
+    let hideTimer;
 
     fetch('guests.json?nocache=' + new Date().getTime())
         .then(response => response.json())
@@ -447,7 +439,9 @@
         
         resultDiv.classList.remove('show'); 
         
-        setTimeout(() => {
+        // BUG FIX 2: Cancel any previous hide timers before setting a new one
+        clearTimeout(hideTimer);
+        hideTimer = setTimeout(() => {
             if (!resultDiv.classList.contains('show')) {
                 resultDiv.style.display = 'none';
             }
@@ -477,6 +471,8 @@
                     
                     tableDisplay.textContent = cleanNumber || rawTable;
                     
+                    // BUG FIX 2: Instantly cancel the hide timer so the new result is guaranteed to show
+                    clearTimeout(hideTimer);
                     resultDiv.style.display = 'block';
                     
                     setTimeout(() => resultDiv.classList.add('show'), 50);

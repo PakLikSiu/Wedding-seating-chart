@@ -259,6 +259,7 @@
             align-items: baseline;
             justify-content: center;
             gap: 12px;
+            margin-bottom: 20px;
         }
 
         .table-prefix, .table-suffix {
@@ -278,7 +279,6 @@
             font-size: 72px; 
             font-weight: 500; 
             
-            /* BUG FIX 1: Prevent clipping of numbers like 3 and 8 */
             line-height: 1.2; 
             padding-bottom: 10px; 
             
@@ -300,10 +300,97 @@
             to { background-position: 200% center; }
         }
 
+        /* NEW: Map Button Styles */
+        .view-map-btn {
+            background: transparent;
+            border: 1px solid var(--champagne-gold);
+            color: var(--text-main);
+            padding: 10px 24px;
+            border-radius: 20px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 13px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(15px);
+            filter: blur(5px);
+        }
+
+        .view-map-btn:hover {
+            background: var(--champagne-gold);
+            color: white;
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+        }
+
         #result.show .result-p { opacity: 1; transform: translateY(0); filter: blur(0); }
         #result.show .table-prefix { opacity: 1; transform: translateY(0); filter: blur(0); transition-delay: 0.2s; }
         #result.show .table-number { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); transition-delay: 0.5s; }
         #result.show .table-suffix { opacity: 1; transform: translateY(0); filter: blur(0); transition-delay: 0.8s; }
+        #result.show .view-map-btn { opacity: 1; transform: translateY(0); filter: blur(0); transition: all 1s cubic-bezier(0.16, 1, 0.3, 1) 1.2s; }
+
+        /* NEW: Modal Styles */
+        .map-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .map-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 85vh;
+            transform: scale(0.95);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .map-modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-image {
+            max-width: 100%;
+            max-height: 85vh;
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            object-fit: contain;
+            background: white; /* In case map has transparent background */
+        }
+
+        .close-modal {
+            position: absolute;
+            top: -45px;
+            right: 0;
+            color: white;
+            font-size: 36px;
+            cursor: pointer;
+            font-family: sans-serif;
+            line-height: 1;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+
+        .close-modal:hover {
+            opacity: 1;
+        }
 
         @media (max-width: 480px) {
             .container { padding: 60px 30px 40px 30px; border-radius: 24px; }
@@ -344,6 +431,14 @@
             <div class="table-number" id="tableDisplay"></div>
             <div class="table-suffix" id="tableSuffix"></div>
         </div>
+        <button id="viewMapBtn" class="view-map-btn">View Map</button>
+    </div>
+</div>
+
+<div id="mapModal" class="map-modal">
+    <div class="modal-content">
+        <div id="closeModal" class="close-modal">&times;</div>
+        <img src="your-map-file.png" alt="Floor Map" class="modal-image">
     </div>
 </div>
 
@@ -389,9 +484,10 @@
     initParticles();
     animateParticles();
 
+    // UPDATED: Added viewMap translations
     const translations = {
-        en: { btnLabel: "繁體中文", names: "Patrick Siu & Annie Wu", title: "Find Your Table", placeholder: "Tap to search your name...", result: "We are delighted to have you seated at", noMatch: "No match found. Please try again.", tPrefix: "Table", tSuffix: "" },
-        zh: { btnLabel: "English", names: "蕭柏力 & 鄔安安", title: "尋找您的座位", placeholder: "點擊搜尋您的名字...", result: "您的座位安排在", noMatch: "找不到符合的名字。請再試一次。", tPrefix: "第", tSuffix: "桌" }
+        en: { btnLabel: "繁體中文", names: "Patrick Siu & Annie Wu", title: "Find Your Table", placeholder: "Tap to search your name...", result: "We are delighted to have you seated at", noMatch: "No match found. Please try again.", tPrefix: "Table", tSuffix: "", viewMap: "View Map" },
+        zh: { btnLabel: "English", names: "蕭柏力 & 鄔安安", title: "尋找您的座位", placeholder: "點擊搜尋您的名字...", result: "您的座位安排在", noMatch: "找不到符合的名字。請再試一次。", tPrefix: "第", tSuffix: "桌", viewMap: "查看地圖" }
     };
 
     let currentLang = 'en';
@@ -402,6 +498,7 @@
     const resultText = document.getElementById('resultText');
     const prefixText = document.getElementById('tablePrefix');
     const suffixText = document.getElementById('tableSuffix');
+    const viewMapBtn = document.getElementById('viewMapBtn'); // NEW
 
     langToggleBtn.addEventListener('click', () => {
         currentLang = currentLang === 'en' ? 'zh' : 'en';
@@ -414,6 +511,7 @@
         resultText.textContent = t.result;
         prefixText.textContent = t.tPrefix;
         suffixText.textContent = t.tSuffix;
+        viewMapBtn.textContent = t.viewMap; // NEW
 
         if (dropdown.classList.contains('show') && dropdown.innerHTML.includes('no-match')) {
             dropdown.innerHTML = `<div class="dropdown-item no-match">${t.noMatch}</div>`;
@@ -425,7 +523,6 @@
     const resultDiv = document.getElementById('result');
     const tableDisplay = document.getElementById('tableDisplay');
     
-    // BUG FIX 2: Create a variable to hold the hide timer so we can cancel it
     let hideTimer;
 
     fetch('guests.json?nocache=' + new Date().getTime())
@@ -439,7 +536,6 @@
         
         resultDiv.classList.remove('show'); 
         
-        // BUG FIX 2: Cancel any previous hide timers before setting a new one
         clearTimeout(hideTimer);
         hideTimer = setTimeout(() => {
             if (!resultDiv.classList.contains('show')) {
@@ -471,7 +567,6 @@
                     
                     tableDisplay.textContent = cleanNumber || rawTable;
                     
-                    // BUG FIX 2: Instantly cancel the hide timer so the new result is guaranteed to show
                     clearTimeout(hideTimer);
                     resultDiv.style.display = 'block';
                     
@@ -493,6 +588,27 @@
     document.addEventListener('click', function(e) {
         if (e.target !== searchInput && !dropdown.contains(e.target)) {
             dropdown.classList.remove('show');
+        }
+    });
+
+    // NEW: Modal JavaScript Logic
+    const mapModal = document.getElementById('mapModal');
+    const closeModalBtn = document.getElementById('closeModal');
+
+    // Open modal when "View Map" is clicked
+    viewMapBtn.addEventListener('click', () => {
+        mapModal.classList.add('active');
+    });
+
+    // Close modal when "X" is clicked
+    closeModalBtn.addEventListener('click', () => {
+        mapModal.classList.remove('active');
+    });
+
+    // Close modal when clicking outside the image (on the dark background)
+    mapModal.addEventListener('click', (e) => {
+        if (e.target === mapModal) {
+            mapModal.classList.remove('active');
         }
     });
 </script>
